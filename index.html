@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tic-Tac-Toe</title>
+    <style>
+        .container {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 5px;
+        }
+
+        .cell {
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            font-size: 2em;
+            cursor: pointer;
+            border: 1px solid #000;
+        }
+
+        .cell:hover {
+            background-color: #eee;
+        }
+
+        .cell {
+            cursor: pointer;
+            border: 1px solid #000;
+            text-align: center;
+            font-size: 2em;
+            transition: all 0.2s; /* Smooth transition for size changes */
+        }
+
+        .cell[data-size="small"] {
+            font-size: 15px;
+        }
+
+        .cell[data-size="medium"] {
+            font-size: 25px;
+        }
+
+        .cell[data-size="big"] {
+            font-size: 35px;
+        }
+        .alerts {
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+            color: white;
+            width: 80vw;
+            height: 80vh;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+
+
+    </style>
+</head>
+<body style="height: 100vh; margin: 0; padding: 0;">
+    <div class="alerts" id="alert"></div>
+    <h1>Tic-Tac-Toe</h1>
+    <div class="container" id="board">
+        <div class="cell" data-cell="0"></div>
+        <div class="cell" data-cell="1"></div>
+        <div class="cell" data-cell="2"></div>
+        <div class="cell" data-cell="3"></div>
+        <div class="cell" data-cell="4"></div>
+        <div class="cell" data-cell="5"></div>
+        <div class="cell" data-cell="6"></div>
+        <div class="cell" data-cell="7"></div>
+        <div class="cell" data-cell="8"></div>
+    </div>
+    
+    <p id="message"></p>
+    <button id="reset">Reset</button>
+    <div>
+        <label for="xSize">X Size:</label>
+        <input type="checkbox" class="sizeX" value="small" > Small
+        <input type="checkbox" class="sizeX" value="medium" > Medium
+        <input type="checkbox" class="sizeX" value="big" > Big
+    </div>
+    <div>
+        <label for="oSize">O Size:</label>
+        <input type="checkbox" class="sizeO" value="small" > Small
+        <input type="checkbox" class="sizeO" value="medium" > Medium
+        <input type="checkbox" class="sizeO" value="big" > Big
+    </div>
+    <script>
+        const cells = document.querySelectorAll('[data-cell]');
+        const message = document.getElementById('message');
+        const resetButton = document.getElementById('reset');
+
+        let currentPlayer = 'X';
+        let gameBoard = ['', '', '', '', '', '', '', '', ''];
+        let gameActive = true;
+
+        const winCombinations = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+
+        const checkWinner = () => {
+            for (const combination of winCombinations) {
+                const [a, b, c] = combination;
+                if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
+                    gameActive = false;
+                    message.textContent = `${currentPlayer} wins!`;
+                }
+            }
+            if (!gameBoard.includes('') && gameActive) {
+                gameActive = false;
+                message.textContent = "It's a draw!";
+            }
+        };
+
+        const handleCellClick = (e) => {
+            const cell = e.target;
+            const index = cell.getAttribute('data-cell');
+
+            let size = getSelectedSizes(currentPlayer);
+
+            if (size === null) {
+                let alertDiv = document.getElementById('alert');
+                alertDiv.style.display = "flex"
+                alertDiv.textContent = 'You should choose a size';     
+
+                return;       
+            }
+
+            cell.setAttribute('data-size',size);
+
+            if (gameBoard[index]) return;
+
+            gameBoard[index] = currentPlayer;
+            cell.textContent = currentPlayer;
+            cell.style.cursor = 'not-allowed';
+
+            checkWinner();
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+
+            if (!gameActive) {
+                cells.forEach((cell) => {
+                    cell.removeEventListener('click', handleCellClick);
+                });
+            }
+        };
+
+
+        const resetGame = () => {
+            gameBoard = ['', '', '', '', '', '', '', '', ''];
+            currentPlayer = 'X';
+            gameActive = true;
+            message.textContent = '';
+            cells.forEach((cell) => {
+                cell.textContent = '';
+                cell.style.cursor = 'pointer';
+                cell.addEventListener('click', handleCellClick);
+            });
+        };
+
+        function getSelectedSizes(player) {
+            const sizeCheckboxes = document.querySelectorAll(`.size${player}`);
+
+            for (const checkbox of sizeCheckboxes) {
+                if (checkbox.checked) {
+                    return checkbox.value;
+                }
+            }
+            return null;
+        }
+
+
+
+        cells.forEach((cell) => {
+            cell.addEventListener('click', handleCellClick);
+        });
+
+        resetButton.addEventListener('click', resetGame);
+    </script>
+</body>
+</html>
+
