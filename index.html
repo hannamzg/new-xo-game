@@ -134,10 +134,10 @@
 
                 return;       
             }
+            console.log(cell.getAttribute('data-size'));
+            if (!checkOfCanChangeIt(cell.getAttribute('data-size'),size)) return;
 
             cell.setAttribute('data-size',size);
-
-            if (gameBoard[index]) return;
 
             gameBoard[index] = currentPlayer;
             cell.textContent = currentPlayer;
@@ -177,7 +177,28 @@
             return null;
         }
 
-
+        function checkOfCanChangeIt(Couertsize,choosenSize){
+            if (Couertsize == null) {
+                return true;
+            }
+            switch (Couertsize) {
+                case "small":
+                    if (choosenSize == "medium" || choosenSize == "large") {
+                        return true;
+                    }
+                    break;
+                case "medium":
+                    if (choosenSize == "large") {
+                        return true;
+                    }
+                    break;
+                case "large":
+                    return false;
+                    break;
+                default:
+                    return true;
+            }
+        }
 
         cells.forEach((cell) => {
             cell.addEventListener('click', handleCellClick);
