@@ -1,0 +1,118 @@
+.container {
+    display: grid;
+    grid-template-columns: repeat(3, 250px);
+    grid-gap: 5px;
+    justify-content: center;
+}
+
+.cell {
+    width: 250px;
+    height: 250px;
+    text-align: center;
+    font-size: 2em;
+    cursor: pointer;
+    border: 1px solid #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cell:hover {
+    background-color: #eee;
+}
+
+.cell {
+    cursor: pointer;
+    border: 1px solid #000;
+    text-align: center;
+    font-size: 2em;
+    transition: all 0.2s;
+}
+
+.cell[data-size="small"] {
+    font-size: 35px;
+}
+
+.cell[data-size="medium"] {
+    font-size: 45px;
+}
+
+.cell[data-size="big"] {
+    font-size: 55px;
+}
+
+.alerts {
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+    color: white;
+    width: 80vw;
+    height: 80vh;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+}
+
+.bi-x-circle{
+    position: absolute;
+    top:10px;
+    right: 10px;
+    font-size: 50px;
+}
+
+fieldset {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+legend {
+    font-weight: bold;
+}
+
+label {
+    display: block;
+    margin: 5px 0;
+}
+
+input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.size-choices label {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+#reset{
+    border: none;
+    font-size: 45px;
+    padding: 10px;
+    margin: 50px auto;
+    display: flex;
+    justify-content: center;
+    background-color: darkgray;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 50%;
+    min-width: 250px;
+}
+
+fieldset{
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+}
+#curentPlayer{
+    margin: 0;
+}
